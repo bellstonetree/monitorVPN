@@ -1,0 +1,18 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local runtime config
+vpn_monitor_config.json
+
+# Packaging/build artifacts
+build/
+dist/
+*.spec
+
+# Downloaded installers
+python-*.exe
+
+# Logs
+*.log
