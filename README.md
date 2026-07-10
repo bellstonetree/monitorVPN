@@ -18,6 +18,8 @@ This project uses only the Python standard library. No third-party packages are 
 ## Run
 
 Double-click `run_hidden.vbs` to start without a command prompt window.
+If hidden startup fails, an error dialog is shown and details are saved to
+`vpn_monitor_error.log`.
 
 For troubleshooting, double-click `run.bat`, or run:
 
