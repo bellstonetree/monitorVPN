@@ -4,11 +4,13 @@ from __future__ import annotations
 
 import json
 import subprocess
-import tkinter as tk
+import sys
 from dataclasses import dataclass
 from locale import getpreferredencoding
 from pathlib import Path
 from typing import Optional
+
+from runtime_environment import MissingRuntimeComponents, require_runtime_environment
 
 
 CONFIG_FILE = Path(__file__).with_name("vpn_monitor_config.json")
@@ -354,10 +356,19 @@ class VpnIndicator:
 
 
 def main() -> None:
+    global tk
+
+    require_runtime_environment()
+    import tkinter as tk
+
     root = tk.Tk()
     VpnIndicator(root)
     root.mainloop()
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except MissingRuntimeComponents as exc:
+        print(exc, file=sys.stderr)
+        sys.exit(1)

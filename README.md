@@ -1,51 +1,54 @@
 # VPN Monitor
 
-Windows desktop indicator for a selected network interface.
+用于监控指定网络接口状态的 Windows 桌面指示器。
 
-The app shows a small always-on-top dot:
+程序会显示一个始终置顶的小圆点：
 
-- Gray: no interface is selected
-- Green: the selected interface is connected
-- Red: the selected interface is disconnected, missing, or cannot be checked
+- 灰色：尚未选择网络接口
+- 绿色：所选网络接口已连接
+- 红色：所选网络接口未连接、不存在或无法检查
 
-## Requirements
+## 运行要求
 
 - Windows
-- Python 3 with Tkinter
+- Python 3.9 或更高版本
+- Tkinter
+- Windows 系统命令 `netsh`
 
-This project uses only the Python standard library. No third-party packages are required.
+本项目仅使用 Python 标准库，不需要安装第三方软件包。
 
-## Run
+程序会在显示指示器前检查上述运行环境。如果缺少一个或多个组件，启动提示会逐项列出缺少的组件名。
 
-Double-click `run_hidden.vbs` to start without a command prompt window.
-If hidden startup fails, an error dialog is shown and details are saved to
-`vpn_monitor_error.log`.
+## 启动方式
 
-For troubleshooting, double-click `run.bat`, or run:
+日常启动请使用 `run_hidden.vbs`，`run.bat` 是故障排查入口。
+
+双击 `run_hidden.vbs` 可在不显示或闪现命令行窗口的情况下启动程序。如果隐藏启动失败，程序会显示错误对话框，并将详细信息保存到 `vpn_monitor_error.log`。
+
+如需排查故障，请双击 `run.bat`，或运行：
 
 ```powershell
 python vpn_monitor.py
 ```
 
-If `python` is not available, install Python 3 from:
+如果系统中没有可用的 `python`，请从以下地址安装 Python 3：
 
 https://www.python.org/downloads/windows/
 
-During installation, enable "Add python.exe to PATH".
+安装时请勾选“Add python.exe to PATH”。
 
-## Controls
+## 操作方法
 
-- Drag the dot with the left mouse button to move it.
-- Right-click the dot and choose `Select interface` to pick the interface to monitor.
-- Right-click the dot and choose `Exit` to close it.
-- Press `Esc` while the dot has focus to close it.
+- 按住鼠标左键拖动小圆点，可以调整其位置。
+- 右键单击小圆点并选择 `Select interface`，可以选择要监控的网络接口。
+- 右键单击小圆点并选择 `Exit`，可以退出程序。
+- 小圆点获得焦点时，按 `Esc` 键可以退出程序。
 
-## Configuration
+## 配置
 
-The selected interface is saved to `vpn_monitor_config.json` next to the script.
-On the next launch, the app uses the saved interface automatically.
+所选网络接口会保存到脚本所在目录的 `vpn_monitor_config.json`。下次启动时，程序会自动使用上次选择的网络接口。
 
-Edit these constants near the top of `vpn_monitor.py` if needed:
+如有需要，可以修改 `vpn_monitor.py` 文件开头附近的以下常量：
 
 ```python
 REFRESH_INTERVAL_MS = 1000
@@ -54,18 +57,18 @@ WINDOW_MARGIN_RIGHT = 24
 WINDOW_MARGIN_TOP = 80
 ```
 
-Interface names are read from:
+程序通过以下命令读取网络接口名称：
 
 ```powershell
 netsh interface ipv4 show interfaces
 ```
 
-## Status Check
+## 状态检查
 
-The program primarily runs:
+程序主要运行以下命令：
 
 ```powershell
 netsh interface ipv4 show interfaces
 ```
 
-It treats the selected interface as connected only when that interface row reports `State` as `connected`.
+只有当所选网络接口所在行的 `State` 为 `connected` 时，程序才会将该接口视为已连接。

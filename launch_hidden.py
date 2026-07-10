@@ -7,6 +7,8 @@ import sys
 import traceback
 from pathlib import Path
 
+from runtime_environment import MissingRuntimeComponents, require_runtime_environment
+
 
 LOG_FILE = Path(__file__).with_name("vpn_monitor_error.log")
 
@@ -17,10 +19,14 @@ def show_error(message: str) -> None:
 
 def main() -> int:
     try:
+        require_runtime_environment()
         from vpn_monitor import main as run_monitor
 
         run_monitor()
         return 0
+    except MissingRuntimeComponents as exc:
+        show_error(str(exc))
+        return 1
     except Exception:
         details = traceback.format_exc()
         LOG_FILE.write_text(details, encoding="utf-8")
