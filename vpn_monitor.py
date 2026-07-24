@@ -14,6 +14,7 @@ from runtime_environment import MissingRuntimeComponents, require_runtime_enviro
 
 
 CONFIG_FILE = Path(__file__).with_name("vpn_monitor_config.json")
+ANYCAST_EXECUTABLE = Path(r"C:\Program Files (x86)\Anycast\Anycast.exe")
 REFRESH_INTERVAL_MS = 1000
 DOT_SIZE = 28
 WINDOW_MARGIN_RIGHT = 24
@@ -65,6 +66,13 @@ def save_selected_interface(interface_name: str) -> None:
         json.dumps(data, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
+
+
+def start_anycast() -> None:
+    try:
+        subprocess.Popen([str(ANYCAST_EXECUTABLE)])
+    except OSError:
+        pass
 
 
 def get_interface_status(interface_name: str) -> InterfaceStatus:
@@ -249,6 +257,7 @@ class VpnIndicator:
 
         self.root.bind("<ButtonPress-1>", self.start_drag)
         self.root.bind("<B1-Motion>", self.drag)
+        self.root.bind("<Double-Button-1>", self.launch_anycast)
         self.root.bind("<Button-3>", self.show_menu)
         self.root.bind("<Enter>", self.show_tooltip)
         self.root.bind("<Leave>", self.hide_tooltip)
@@ -264,6 +273,9 @@ class VpnIndicator:
         x = self.root.winfo_x() + event.x - self.drag_start_x
         y = self.root.winfo_y() + event.y - self.drag_start_y
         self.root.geometry(f"+{x}+{y}")
+
+    def launch_anycast(self, _event: Optional[tk.Event] = None) -> None:
+        start_anycast()
 
     def show_menu(self, event: tk.Event) -> None:
         self.rebuild_menu()

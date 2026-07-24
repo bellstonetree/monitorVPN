@@ -40,6 +40,7 @@ https://www.python.org/downloads/windows/
 ## 操作方法
 
 - 按住鼠标左键拖动小圆点，可以调整其位置。
+- 双击小圆点会启动 `C:\Program Files (x86)\Anycast\Anycast.exe`。程序不存在或启动失败时不会显示错误提示。
 - 右键单击小圆点并选择 `Select interface`，可以选择要监控的网络接口。
 - 右键单击小圆点并选择 `Exit`，可以退出程序。
 - 小圆点获得焦点时，按 `Esc` 键可以退出程序。
